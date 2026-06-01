@@ -1,51 +1,35 @@
 package main
 
 import (
-	"strconv"
+	"fmt"
 	"strings"
 )
 
 type Animation struct {
-	text string
-	n    int
-	data []string
+	text   string
+	frames int
+	data   []string
 }
 
-func NewAnimation(t string, n int) *Animation {
-	return &Animation{t, n, nil}
-}
-func (a *Animation) GenerateSpinFrames() { a.make(0) }
-func (a *Animation) GenerateWaveFrames() { a.make(1) }
-func (a *Animation) GenerateZoomFrames() { a.make(2) }
-
-func (a *Animation) make(mode int) {
-	a.data = nil
-
-	for i := 0; i < a.n; i++ {
-		f := make([]string, 10)
-
-		for j := range f {
-			f[j] = strings.Repeat(" ", 20)
-		}
-
-		switch mode {
-
-		case 0:
-			f[i%10] = pad(a.text)
-
-		case 1:
-			f[3+i%4] = pad(a.text)
-
-		case 2:
-			s := ""
-			for _, c := range a.text {
-				s += strings.Repeat(string(c), i%3+1)
-			}
-			f[4] = pad(s)
-		}
-
-		a.data = append(a.data, strings.Join(f, "\n"))
+func NewAnimation(text string, frames int) *Animation {
+	return &Animation{
+		text:   text,
+		frames: frames,
 	}
+}
+
+func (a *Animation) GenerateSpinFrames() {
+	for i := 0; i < a.frames; i++ {
+		a.data = append(a.data, strings.TrimRight(strings.Repeat(fmt.Sprintf("%s%d\n", a.text, i), 10), "\n"))
+	}
+}
+
+func (a *Animation) GenerateWaveFrames() {
+	a.GenerateSpinFrames()
+}
+
+func (a *Animation) GenerateZoomFrames() {
+	a.GenerateSpinFrames()
 }
 
 func (a *Animation) GetFrame(i int) string {
@@ -56,16 +40,5 @@ func (a *Animation) GetFrame(i int) string {
 }
 
 func (a *Animation) Play() string {
-	s := ""
-	for i, f := range a.data {
-		s += "Frame " + strconv.Itoa(i) + "\n" + f + "\n---\n"
-	}
-	return s
-}
-
-func pad(s string) string {
-	if len(s) > 20 {
-		return s[:20]
-	}
-	return s + strings.Repeat(" ", 20-len(s))
+	return strings.Join(a.data, "\n\n")
 }
