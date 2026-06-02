@@ -1,27 +1,23 @@
-package code
+package main
+
+func g(c rune, r int) (s string) {
+	for i := 0; i < 8; i++ {
+		if (int(c)^(r*17)^(i*11))%3 != 0 {
+			s += "*"
+		} else {
+			s += " "
+		}
+	}
+	return
+}
 
 func GenerateFont() map[rune][]string {
-	font := make(map[rune][]string)
-
-	blank := "        "
-
-	font[' '] = []string{blank, blank, blank, blank, blank, blank, blank, blank}
-
-	for c := rune(33); c <= rune(126); c++ {
-		lines := make([]string, 8)
-		for row := 0; row < 8; row++ {
-			b := make([]byte, 8)
-			for col := 0; col < 8; col++ {
-				if (int(c)^(row*17)^(col*11))%3 != 0 {
-					b[col] = '*'
-				} else {
-					b[col] = ' '
-				}
-			}
-			lines[row] = string(b)
-		}
-		font[c] = lines
+	f := map[rune][]string{' ': make([]string, 8)}
+	for i := range f[' '] {
+		f[' '][i] = "        "
 	}
-
-	return font
+	for c := rune(33); c <= 126; c++ {
+		f[c] = []string{g(c, 0), g(c, 1), g(c, 2), g(c, 3), g(c, 4), g(c, 5), g(c, 6), g(c, 7)}
+	}
+	return f
 }
