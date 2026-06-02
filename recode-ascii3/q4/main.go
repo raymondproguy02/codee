@@ -1,8 +1,6 @@
 package main
 
-import (
-	"strings"
-)
+import "strings"
 
 type ArtBuilder struct {
 	text  string
@@ -19,43 +17,37 @@ func (a *ArtBuilder) AddText(text string) *ArtBuilder {
 }
 
 func (a *ArtBuilder) SetStyle(style string) *ArtBuilder {
-	if style != "normal" && style != "bold" &&
-		style != "italic" && style != "outline" {
+	if style != "normal" && style != "bold" && style != "italic" && style != "outline" {
 		panic("invalid style")
 	}
-
 	a.style = style
 	return a
 }
 
 func (a *ArtBuilder) Build() string {
 	lines := make([]string, 8)
+	w := len(a.text)
 
-	for i := 0; i < 8; i++ {
-
+	for i := range lines {
 		switch a.style {
-
 		case "bold":
 			for _, r := range a.text {
 				lines[i] += string(r) + string(r)
 			}
-
 		case "italic":
-			lines[i] = strings.Repeat(" ", 7-i) + a.text
-
+			pad := strings.Repeat(" ", (7 - i))
+			lines[i] = pad + a.text + strings.Repeat(" ", i)
 		case "outline":
-			border := strings.Repeat("*", len(a.text)+4)
-
+			bar := "+" + strings.Repeat("-", w+2) + "+"
 			if i == 0 || i == 7 {
-				lines[i] = border
+				lines[i] = bar
 			} else {
-				lines[i] = "* " + a.text + " *"
+				lines[i] = "| " + a.text + " |"
 			}
-
 		default:
 			lines[i] = a.text
 		}
 	}
 
-	return strings.Join(lines, "\n")
+	return strings.Join(lines, "\n") + "\n"
 }
