@@ -6,7 +6,9 @@
     <title>{{.PageTitle}}</title>
 </head>
 <body>
-    <h1>Welcome, {{.Username}}!</h1>
-    <p>Your current virtual balance is: {{.Balance}}</p>
+    <h1>{{.WelcomeMessage}}</h1>
+    <p>Player Profile: <strong>{{.Username}}</strong></p>
+    <p>Current Earnings: <strong>{{.Balance}}</strong></p>
+    <p>Official Website: <a href="{{.GameURL}}" target="_blank">{{.GameURL}}</a></p>
 </body>
 </html>
