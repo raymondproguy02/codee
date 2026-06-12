@@ -7,17 +7,23 @@ import (
 )
 
 func main() {
-	if len(os.Args) == 3 {
-		if len(os.Args[1]) == 0 {
-			return
-		}
-		font, err := perser.Load(os.Args[2])
-		if err != nil {
-			fmt.Println("err", err)
-			return
-		}
-		lines := perser.Split(os.Args[1])
-		res := perser.Generate(font, lines)
-		fmt.Println(res)
+	if len(os.Args) != 3 {
+		return
 	}
+	if len(os.Args[1]) == 0 {
+		return
+	}
+	valid, err := perser.Validate(os.Args[1])
+	if err != nil {
+		fmt.Printf("invalid %q", valid)
+		return
+	}
+	font, err := perser.LoadBanner(os.Args[2])
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	word := perser.SplitInput(os.Args[1])
+	res := perser.GenerateArt(font, word)
+	fmt.Println(res)
 }
