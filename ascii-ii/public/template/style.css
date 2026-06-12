@@ -1,0 +1,10 @@
+body {
+    text-align: center;
+    align-items: center;
+    background-color: aquamarine;
+    color: antiquewhite;
+}
+#form {
+    display: inline-block;
+    position: absolute;
+}

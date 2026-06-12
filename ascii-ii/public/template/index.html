@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+  <!--  <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+    <div class="container">
+        <h2>{{.Text}}</h2>
+        <p>Version {{.Version}}, read more {{.Docs}}</p>
+        <div class="form">
+            <form action="/" method="get">
+                <h3>Ascii Art Generator Engine Golang</h3>
+                <textarea placeholder="Enter text..." cols="60" rows="5"></textarea>
+                <button type="reset">Reset</button>
+                <button type="submit">Generate Ascii</button>
+                <pre>Generated Ascii Characters will be displayed here.</pre>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
