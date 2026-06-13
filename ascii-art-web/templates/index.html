@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ascii Art Web</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Ascii Art Web Project practice</h1>
+        <form action="/ascii-art" method="POST">
+            <textarea name="input" class="inputField" placeholder="Type something..." cols="30" rows="10"></textarea>
+            <br>
+            <label for="banners">
+                <h3>Choice a banner file!</h3>
+                <input type="radio" name="banner" value=""> Shadow
+                <input type="radio" name="banner" value=""> Standard
+                <input type="radio" name="banner" value=""> Thinkertoy
+            </label>
+            <br>
+            <div class="btn">
+                <button type="submit" class="btng">Generate Ascii</button> 
+                <button type="reset" class="btnr">Reset Input</button>
+            </div>
+           <br>
+            <pre>Ascii Art Characters will be displayed here!</pre>
+        </form>
+    </div>
+</body>
+</html>
