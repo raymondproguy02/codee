@@ -1,39 +1,98 @@
 package main
 
 import (
-	//"code/perser"
-
-	"fmt"
+	"html/template"
 	"log"
 	"net/http"
-	//"os"
+	"os"
+	"strings"
 )
 
+type Ascii struct {
+	Result string
+	Error  string
+}
+
 func main() {
-	// if len(os.Args) != 3 {
-	// 	return
-	// }
-	// if len(os.Args[1]) == 0 {
-	// 	return
-	// }
-	// valid, err := perser.Validate(os.Args[1])
-	// if err != nil {
-	// 	fmt.Printf("invalid %q", valid)
-	// 	return
-	// }
-	// font, err := perser.LoadBanner(os.Args[2])
-	// if err != nil {
-	// 	fmt.Println("Error:", err)
-	// 	return
-	// }
-	// word := perser.SplitInput(os.Args[1])
-	// res := perser.GenerateArt(font, word)
-	// fmt.Println(res)
-	//port := "8000"
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Ascii Art Go Web Server")
-	})
-	log.Println("Server up and running: Visit http://127.0.0.1:8000/")
-	http.ListenAndServe("8080", mux)
+	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/ascii-art", asciiArtHandler)
+
+	log.Println("Server on http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, _ := template.ParseFiles("templates/index.html")
+	tmpl.Execute(w, nil)
+}
+
+func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	input := r.FormValue("input")
+	banner := r.FormValue("banner")
+
+	tmpl, _ := template.ParseFiles("templates/index.html")
+
+	if banner == "" {
+		tmpl.Execute(w, Ascii{Error: "Please select a banner"})
+		return
+	}
+
+	if input == "" {
+		tmpl.Execute(w, Ascii{Error: "Please enter some text"})
+		return
+	}
+
+	font, err := loadBanner(banner)
+	if err != nil {
+		tmpl.Execute(w, Ascii{Error: "Cannot load banner: " + banner})
+		return
+	}
+
+	words := splitInput(input)
+	result := generateArt(font, words)
+
+	tmpl.Execute(w, Ascii{Result: result})
+}
+
+func loadBanner(file string) ([]string, error) {
+	file = strings.TrimSuffix(file, ".txt")
+	data, err := os.ReadFile("banners/" + file + ".txt")
+	if err != nil {
+		return nil, err
+	}
+	lines := strings.Split(strings.ReplaceAll(string(data), "\r\n", "\n"), "\n")
+	return lines, nil
+}
+
+func splitInput(input string) []string {
+	input = strings.ReplaceAll(input, "\r\n", "\n")
+	return strings.Split(input, "\\n")
+}
+
+func generateArt(fonts []string, words []string) string {
+	var res strings.Builder
+	for index, word := range words {
+		if word == "" {
+			res.WriteString("\n")
+			continue
+		}
+		for i := 1; i <= 8; i++ {
+			for _, ch := range word {
+				idx := i + (int(ch-32) * 9)
+				if idx < len(fonts) && idx >= 0 {
+					res.WriteString(fonts[idx])
+				}
+			}
+			res.WriteString("\n")
+		}
+		if index < len(words)-1 && words[index+1] != "" {
+			res.WriteString("\n")
+		}
+	}
+	return res.String()
 }
