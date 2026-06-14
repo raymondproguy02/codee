@@ -2,7 +2,7 @@ package main
 
 func GeneratePattern(c rune) []string {
 	pattern := map[rune][]string{}
-	for i := 'A'; i < 'Z'; i++ {
+	for i := 'A'; i <= 'Z'; i++ {
 		pattern[i] = []string{
 			"  ##  ",
 			" #  # ",
