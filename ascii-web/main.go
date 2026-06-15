@@ -1,10 +1,9 @@
 package main
 
 import (
+	"ascii-art-web/parser"
 	"html/template"
 	"net/http"
-
-	"ascii-art-web/perser"
 )
 
 type PageData struct {
@@ -55,19 +54,19 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	text := r.FormValue("input")
 	banner := r.FormValue("banner")
 
-	if _, err := perser.Validate(text); err != nil {
+	if _, err := parser.Validate(text); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	fonts, err := perser.LoadBanner(banner)
+	fonts, err := parser.LoadBanner(banner)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 
-	words := perser.SplitInput(text)
-	result := perser.GenerateArt(fonts, words)
+	words := parser.SplitInput(text)
+	result := parser.GenerateArt(fonts, words)
 
 	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {
