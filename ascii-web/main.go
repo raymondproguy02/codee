@@ -16,10 +16,16 @@ type PageData struct {
 
 func main() {
 	http.HandleFunc("/", homeHandler)
+	//http.HandleFunc("/style.css", styleFile)
 	http.HandleFunc("/ascii-art", asciiArtHandler)
 
 	http.ListenAndServe(":8080", nil)
 }
+
+// func styleFile(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "text/css")
+// 	http.ServeFile(w, r, "templates/style.css")
+// }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {

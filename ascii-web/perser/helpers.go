@@ -7,7 +7,7 @@ import (
 
 func SplitInput(input string) []string {
 	input = strings.ReplaceAll(input, "\r\n", "\n")
-	return strings.Split(input, "\\n")
+	return strings.Split(input, "\n")
 }
 
 func Validate(input string) (rune, error) {
