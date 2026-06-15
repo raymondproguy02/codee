@@ -42,7 +42,7 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	text := r.FormValue("text")
+	text := r.FormValue("input")
 	banner := r.FormValue("banner")
 
 	if _, err := perser.Validate(text); err != nil {
