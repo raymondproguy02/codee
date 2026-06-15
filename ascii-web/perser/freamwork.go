@@ -2,6 +2,7 @@ package perser
 
 import "strings"
 
+// GenerateArt builds ASCII art from input words using the selected font.
 func GenerateArt(fonts []string, words []string) string {
 	var res strings.Builder
 	for index, word := range words {

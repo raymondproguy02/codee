@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// LoadBanner the function that reads from the banner file
+// LoadBanner reads and validates the ASCII banner files
 func LoadBanner(file string) ([]string, error) {
 	// Remove extra extentions if provided by the user
 	file = strings.TrimSuffix(file, ".txt")

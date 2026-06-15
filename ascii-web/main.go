@@ -14,6 +14,7 @@ type PageData struct {
 	Error  string
 }
 
+// Start HTTP server and route requests for ASCII art generation.
 func main() {
 	http.HandleFunc("/", homeHandler)
 	//http.HandleFunc("/style.css", styleFile)
@@ -22,11 +23,13 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
+// Serve the CSS stylesheet file for the web page styling.
 // func styleFile(w http.ResponseWriter, r *http.Request) {
 // 	w.Header().Set("Content-Type", "text/css")
 // 	http.ServeFile(w, r, "templates/style.css")
 // }
 
+// Serve the main HTML page for the ASCII art web interface.
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.Error(w, "404 page not found", http.StatusNotFound)
@@ -42,6 +45,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
+// Handle POST requests, generate ASCII art, and return the result page.
 func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
