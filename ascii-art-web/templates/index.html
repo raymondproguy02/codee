@@ -10,7 +10,7 @@
     <div class="container">
         <h1>Ascii Art Web Project practice</h1>
         <form action="/ascii-art" method="POST">
-            <textarea name="input" class="inputField" placeholder="Type something..." cols="30" rows="10"></textarea>
+            <textarea name="input" class="inputField" placeholder="Type something..." cols="30" rows="10">{{.Input}}</textarea>
             <br>
             <label for="banners">
                 <h3>Choice a banner file!</h3>
@@ -24,7 +24,8 @@
                 <button type="reset" class="btnr">Reset Input</button>
             </div>
            <br>
-            <pre>Ascii Art Characters will be displayed here!</pre>
+            <p>Ascii Art Characters will be displayed here!</p>
+            <pre>{{.Result}}</pre>
         </form>
         <footer class="footer">
             Built with love ❤️ using GoLang HTML CSS
