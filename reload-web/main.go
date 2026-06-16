@@ -30,11 +30,19 @@ func home(w http.ResponseWriter, r *http.Request) {
 	log.Println("Request recieved at:", r.URL)
 }
 
-func reload(w http.ResponseWriter, r *http.Request) {}
+func style(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/css")
+	http.ServeFile(w, r, "templates/style.css")
+}
+
+func reload(w http.ResponseWriter, r *http.Request) {
+	// God help us here!
+}
 
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
+	mux.HandleFunc("/style.css", style)
 	mux.HandleFunc("/reload", reload)
 
 	log.Println("Server up and running, visit http://127.0.0.1:8000")

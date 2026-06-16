@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Reloaded web</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <form action="/reload" method="post">
+            <h1>Go Reloaded Web</h1>
+            <input type="text" name="input" placeholder="Type anything...">
+            <button type="submit">Send</button> 
+            <input type="text" placeholder="Output will display here!" readonly>{{.Result}}</input>
+        </form>
+    </div>
+</body>
+</html>

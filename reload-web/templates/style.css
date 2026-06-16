@@ -1,0 +1,17 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.container {
+    background-color: blue;
+    color: white;
+    position: relative;
+    border: 1px solid black;
+    border-radius: 14px;
+    font-style: oblique;
+    min-height: 90hv;
+    width: 80%;
+    margin: 20px auto;
+    padding: 30px;
+    text-align: center;
+}
