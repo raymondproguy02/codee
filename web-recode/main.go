@@ -28,6 +28,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	temp.Execute(w, nil)
+	log.Println("Request recieved at:", r.URL)
 }
 
 func echo(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +58,7 @@ func echo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	temp.Execute(w, data)
+	log.Println("Request recieved at:", r.URL)
 }
 
 func main() {
