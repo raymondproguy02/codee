@@ -56,17 +56,25 @@ func ValidateInput(input string) ([]rune, error) {
 }
 
 func main() {
-	if len(os.Args) == 3 {
-		if len(os.Args[1]) == 0 {
-			return
-		}
-		fontFileLines, err := LoadBanner(os.Args[2])
-		if err != nil {
-			fmt.Printf("Error: %v", err)
-			return
-		}
-		words := SplitInput(os.Args[1])
-		result := GenerateArt(fontFileLines, words)
-		fmt.Println(result)
+	if len(os.Args) != 3 {
+		return
 	}
+	if len(os.Args[1]) == 0 {
+		return
+	}
+	val, err := ValidateInput(os.Args[1])
+	if err != nil {
+		fmt.Println("invalid", val)
+		return
+	}
+
+	font, err := LoadBanner(os.Args[2])
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	words := SplitInput(os.Args[1])
+	res := GenerateArt(font, words)
+	fmt.Println(res)
 }
