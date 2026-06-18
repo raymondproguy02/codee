@@ -9,7 +9,7 @@ type appData struct {
 	ID          int
 	Name        string
 	Item        string
-	Price       float32
+	Price       string
 	Description string
 }
 
@@ -22,6 +22,13 @@ func AppHandler(w http.ResponseWriter, r *http.Request) {
 	price := r.FormValue("price")
 	des := r.FormValue("des")
 
+	idCount := len(id) + 1
+
+	if name == "" && item == "" && price == "" && des == "" {
+		http.Error(w, "All fields must not be empty", http.StatusBadRequest)
+		return
+	}
+
 	temp, err := template.ParseFiles("public/index.html")
 	if err != nil {
 		http.Error(w, "Frontend page missing", http.StatusNotFound)
@@ -29,11 +36,11 @@ func AppHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := appData{
-		ID:          1,
-		Name:        "Ray",
-		Item:        "Laptop",
-		Price:       240.00,
-		Description: "Hp Elite, 8th Gen, core i5",
+		ID:          idCount,
+		Name:        name,
+		Item:        item,
+		Price:       price,
+		Description: des,
 	}
 	temp.Execute(w, data)
 	Listings = append(Listings, data)
