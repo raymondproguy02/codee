@@ -24,7 +24,11 @@ func init() {
 	}
 }
 
-func AppHandler(w http.ResponseWriter, r *http.Request) {
+func PostHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, "Error parsing form", http.StatusInternalServerError)
@@ -59,6 +63,25 @@ func AppHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = tmpl.Execute(w, data)
+	if err != nil {
+		http.Error(w, "Error rendring template", http.StatusInternalServerError)
+		return
+	}
+}
+
+func GetHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	data := struct {
+		Listings []appData
+	}{
+		Listings: Listings,
+	}
+
+	err := tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Error rendring template", http.StatusInternalServerError)
 		return
