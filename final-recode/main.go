@@ -58,7 +58,7 @@ func GenerateArt(fonts []string, words []string) string {
 			}
 			res.WriteString("\n")
 		}
-		if index < len(words)-1 && words[index+1] != "" {
+		if index != len(words)-1 && words[index+1] != "" {
 			res.WriteString("\n")
 		}
 	}
@@ -87,10 +87,14 @@ func asciiHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "not alowed", http.StatusNotFound)
 		return
 	}
-	text := r.URL.Query().Get("input")
-	banner := r.URL.Query().Get("banner")
+	text := r.FormValue("input")
+	banner := r.FormValue("banner")
 
-	font, _ := LoadBanner(banner)
+	font, err := LoadBanner(banner)
+	if err != nil {
+		http.Error(w, "no banner", 405)
+		return
+	}
 	word := SplitInput(text)
 	res := GenerateArt(font, word)
 
@@ -108,22 +112,25 @@ func asciiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func switchHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "not alowed", http.StatusMethodNotAllowed)
-		return
-	}
+	// if r.Method != http.MethodPost {
+	// 	http.Error(w, "not alowed", http.StatusMethodNotAllowed)
+	// 	return
+	// }
 	if r.URL.Path != "/ascii-switch" {
-		http.Error(w, "not alowed", http.StatusNotFound)
+		http.Error(w, "not allowed", http.StatusNotFound)
 		return
 	}
 	text := r.URL.Query().Get("input")
 	banner := r.URL.Query().Get("banner")
 
 	if banner == "" {
-		r.FormValue("banner")
+		banner = "fake"
 	}
 
-	font, _ := LoadBanner(banner)
+	font, err := LoadBanner(banner)
+	if err != nil {
+		return
+	}
 	word := SplitInput(text)
 	res := GenerateArt(font, word)
 
@@ -146,9 +153,9 @@ func main() {
 	mux.HandleFunc("/ascii-art", asciiHandler)
 	mux.HandleFunc("/ascii-switch", switchHandler)
 
-	log.Println("Server Running at http://localhost:8080")
+	log.Println("Server Running at http://localhost:8000")
 
-	err := http.ListenAndServe(":8080", mux)
+	err := http.ListenAndServe(":8000", mux)
 
 	if err != nil {
 		fmt.Println(err)

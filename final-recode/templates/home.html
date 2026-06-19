@@ -16,20 +16,14 @@
                 <option value="thinkertoy">Thinkertoy</option>
             </select>
             <button type="submit">send</button>
+
         </form>
-        <br>
-        <hr>
-        <br>
         <form action="/ascii-switch" method="post">
-            <a href="/ascii-switch?text={{.Text}}&banner=standard">standard</a>
-            <a href="/ascii-switch?text={{.Text}}&banner=shadow">shadow</a>
-            <a href="/ascii-switch?text={{.Text}}&banner=thinkertoy">thinkertoy</a>
-        </form>
-
-        <br>
-        <hr>
-        <br>
-
+            <a href="/ascii-switch?text={{.Input}}&banner=standard">standard</a>
+            <a href="/ascii-switch?text={{.Input}}&banner=shadow">shadow</a>
+            <a href="/ascii-switch?text={{.Input}}&banner=thinkertoy">thinkertoy</a>
+            </form>
+      
         <!-- <pre>
             {{.Result}}
         </pre> -->
