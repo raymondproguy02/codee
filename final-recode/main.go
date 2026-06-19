@@ -1,7 +1,13 @@
 package main
 
-func main() {
-	func LoadBanner(file string) ([]string, error) {
+import (
+	"fmt"
+	"net/http"
+	"os"
+	"strings"
+)
+
+func LoadBanner(file string) ([]string, error) {
 	file = strings.TrimSuffix(file, ".txt")
 	data, err := os.ReadFile("banners/" + file + ".txt")
 	if err != nil {
@@ -50,4 +56,17 @@ func GenerateArt(fonts []string, words []string) string {
 	}
 	return res.String()
 }
+
+func main() {
+	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/ascii-art", asciiHandler)
+	http.HandleFunc("/ascii-switch", switchHandler)
+
+	fmt.Println("Server Running at http://localhost:8080")
+
+	err := http.ListenAndServe(":8080", nil)
+
+	if err != nil {
+		fmt.Println(err)
+	}
 }
