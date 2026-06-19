@@ -79,7 +79,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	tmlp.Execute(w, nil)
 }
 func asciiHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
+	if r.Method != http.MethodPost {
 		http.Error(w, "not alowed", http.StatusMethodNotAllowed)
 		return
 	}
@@ -108,11 +108,11 @@ func asciiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func switchHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
+	if r.Method != http.MethodPost {
 		http.Error(w, "not alowed", http.StatusMethodNotAllowed)
 		return
 	}
-	if r.URL.Path != "/ascii-art" {
+	if r.URL.Path != "/ascii-switch" {
 		http.Error(w, "not alowed", http.StatusNotFound)
 		return
 	}
