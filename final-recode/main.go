@@ -2,10 +2,18 @@ package main
 
 import (
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 	"os"
 	"strings"
 )
+
+type PageData struct {
+	Input  string
+	Banner string
+	Result string
+}
 
 func LoadBanner(file string) ([]string, error) {
 	file = strings.TrimSuffix(file, ".txt")
@@ -57,14 +65,90 @@ func GenerateArt(fonts []string, words []string) string {
 	return res.String()
 }
 
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Error(w, "not allowed", http.StatusNotFound)
+		return
+	}
+
+	tmlp, err := template.ParseFiles("templates/home.html")
+	if err != nil {
+		http.Error(w, "error serving template", http.StatusInternalServerError)
+		return
+	}
+	tmlp.Execute(w, nil)
+}
+func asciiHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "not alowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if r.URL.Path != "/ascii-art" {
+		http.Error(w, "not alowed", http.StatusNotFound)
+		return
+	}
+	text := r.URL.Query().Get("input")
+	banner := r.URL.Query().Get("banner")
+
+	font, _ := LoadBanner(banner)
+	word := SplitInput(text)
+	res := GenerateArt(font, word)
+
+	tmpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		http.Error(w, "error", http.StatusNotFound)
+		return
+	}
+	data := PageData{
+		Input:  text,
+		Banner: banner,
+		Result: res,
+	}
+	tmpl.Execute(w, data)
+}
+
+func switchHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "not alowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if r.URL.Path != "/ascii-art" {
+		http.Error(w, "not alowed", http.StatusNotFound)
+		return
+	}
+	text := r.URL.Query().Get("input")
+	banner := r.URL.Query().Get("banner")
+
+	if banner == "" {
+		r.FormValue("banner")
+	}
+
+	font, _ := LoadBanner(banner)
+	word := SplitInput(text)
+	res := GenerateArt(font, word)
+
+	tmpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		http.Error(w, "error", http.StatusNotFound)
+		return
+	}
+	data := PageData{
+		Input:  text,
+		Banner: banner,
+		Result: res,
+	}
+	tmpl.Execute(w, data)
+}
+
 func main() {
-	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/ascii-art", asciiHandler)
-	http.HandleFunc("/ascii-switch", switchHandler)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", homeHandler)
+	mux.HandleFunc("/ascii-art", asciiHandler)
+	mux.HandleFunc("/ascii-switch", switchHandler)
 
-	fmt.Println("Server Running at http://localhost:8080")
+	log.Println("Server Running at http://localhost:8080")
 
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", mux)
 
 	if err != nil {
 		fmt.Println(err)
