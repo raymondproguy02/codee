@@ -58,7 +58,7 @@ func GenerateArt(fonts []string, words []string) string {
 			}
 			res.WriteString("\n")
 		}
-		if index != len(words)-1 && words[index+1] != "" {
+		if index < len(words)-1 && words[index+1] != "" {
 			res.WriteString("\n")
 		}
 	}
@@ -112,15 +112,15 @@ func asciiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func switchHandler(w http.ResponseWriter, r *http.Request) {
-	// if r.Method != http.MethodPost {
-	// 	http.Error(w, "not alowed", http.StatusMethodNotAllowed)
-	// 	return
-	// }
+	if r.Method == http.MethodPost {
+		http.Error(w, "not alowed", http.StatusMethodNotAllowed)
+		return
+	}
 	if r.URL.Path != "/ascii-switch" {
 		http.Error(w, "not allowed", http.StatusNotFound)
 		return
 	}
-	text := r.URL.Query().Get("input")
+	text := r.URL.Query().Get("text")
 	banner := r.URL.Query().Get("banner")
 
 	if banner == "" {
