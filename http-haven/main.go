@@ -93,6 +93,8 @@ func main() {
 	http.HandleFunc("/dashboard", dash)
 	http.HandleFunc("/legacy", legacy)
 	http.HandleFunc("/v2", v2)
+	http.HandleFunc("/method-inspector", method)
+	http.HandleFunc("/echo", echo)
 	log.Println("App running on http://127.0.0.1:5000/")
 	log.Fatal(http.ListenAndServe(":5000", nil))
 }
