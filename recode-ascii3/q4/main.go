@@ -20,21 +20,15 @@ func (a *ArtBuilder) SetStyle(style string) *ArtBuilder {
 	if style != "normal" && style != "bold" && style != "italic" && style != "outline" {
 		panic("invalid style")
 	}
-<<<<<<< HEAD
 	a.style = style
-=======
 	a.style += style
->>>>>>> 39f9605 (not project just some random stuffs)
 	return a
 }
 
 func (a *ArtBuilder) Build() string {
 	lines := make([]string, 8)
 	w := len(a.text)
-<<<<<<< HEAD
 
-=======
->>>>>>> 39f9605 (not project just some random stuffs)
 	for i := range lines {
 		switch a.style {
 		case "bold":
@@ -55,11 +49,6 @@ func (a *ArtBuilder) Build() string {
 			lines[i] = a.text
 		}
 	}
-<<<<<<< HEAD
 
 	return strings.Join(lines, "\n") + "\n"
 }
-=======
-	return strings.Join(lines, "\n") + "\n"
-}
->>>>>>> 39f9605 (not project just some random stuffs)
