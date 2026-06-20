@@ -32,7 +32,7 @@ func main() {
 	mux.HandleFunc("/styles/style.css", styleFile)
 	mux.HandleFunc("/listings", handlers.GetHandler)
 	mux.HandleFunc("api/add", handlers.PostHandler)
-	log.Println("Server running on http:127.0.0.1:8000")
+	log.Println("Server running on http://127.0.0.1:8000")
 	err := http.ListenAndServe(":8080", mux)
 	if err != nil {
 		log.Panic(err)
