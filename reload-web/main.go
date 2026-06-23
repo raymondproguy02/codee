@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"reloaded-web/processors"
 )
 
 type pageData struct {
@@ -36,7 +37,19 @@ func style(w http.ResponseWriter, r *http.Request) {
 }
 
 func reload(w http.ResponseWriter, r *http.Request) {
-	// God help us here!
+	text := r.FormValue("input")
+	res := processors.Hex(text)
+	res = processors.Bin(text)
+
+	tmpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	data := pageData{
+		Input:  text,
+		Result: res,
+	}
+	tmpl.Execute(w, data)
 }
 
 func main() {
