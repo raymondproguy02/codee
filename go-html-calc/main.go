@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type Calculator struct {
@@ -20,6 +21,27 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tmpl.Execute(w, nil)
+}
+
+func calc(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	a := r.FormValue("num1")
+	b := r.FormValue("num2")
+	o := r.FormValue("op")
+
+	con, err := strconv.Atoi(a)
+	if err != nil {
+		http.Error(w, "Must be valid intiger", 400)
+		return
+	}
+	conv, err := strconv.Atoi(b)
+	if err != nil {
+		http.Error(w, "Must be valid intiger", 400)
+		return
+	}
+	if o == "add" {
+		con + conv
+	}
 }
 
 func main() {

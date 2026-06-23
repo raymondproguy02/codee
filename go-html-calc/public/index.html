@@ -8,7 +8,17 @@
 <body>
     <div class="app">
         <h2>Golang Html Calculator Template</h2>
-        <form action="/calc" method="post"></form>
+        <form action="/calc" method="post">
+            <input type="text" readonly>{{.Result}}<br><br>
+            <input type="text" name="num1" placeholder="Enter any first number"><br><br>
+            <input type="text" name="num2" placeholder="Enter any second number">
+            <p>Choose Operator</p>
+            <input type="radio" name="op" value="add"> Add
+            <input type="radio" name="op" value="sub"> Substract
+            <input type="radio" name="op" value="mul"> Multiply
+            <input type="radio" name="op" value="div"> Divide <br><br>
+            <button type="submit">Equals</button>
+        </form>
     </div>
 </body>
 </html>
