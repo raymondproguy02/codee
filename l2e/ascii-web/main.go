@@ -9,6 +9,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", handlers.HomeHanler)
+	mux.HandleFunc("POST /ascii-art", handlers.AsciiHandler)
 
 	log.Println("Server running on http://127.0.0.1:8000")
 	err := http.ListenAndServe(":8000", mux)
