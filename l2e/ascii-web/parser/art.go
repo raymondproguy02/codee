@@ -2,7 +2,7 @@ package parser
 
 import "strings"
 
-func GenArt(font []string, words []string) string {
+func GenArt(fonts []string, words []string) string {
 	var res strings.Builder
 	for index, word := range words {
 		if word == "" {
@@ -11,7 +11,7 @@ func GenArt(font []string, words []string) string {
 		}
 		for i := 1; i <= 8; i++ {
 			for _, ch := range word {
-				res.WriteString(font[i+int(ch-32)*9])
+				res.WriteString(fonts[i+int(ch-' ')*9])
 			}
 			res.WriteString("\n")
 		}

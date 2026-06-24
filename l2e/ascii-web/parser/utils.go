@@ -15,6 +15,6 @@ func Val(input string) (rune, error) {
 }
 
 func Split(input string) []string {
-	input = strings.ReplaceAll(input, "\n\r", "\n")
-	return strings.Split(input, " ")
+	input = strings.ReplaceAll(input, "\r\n", "\n")
+	return strings.Split(input, "\n")
 }

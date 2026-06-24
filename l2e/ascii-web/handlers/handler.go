@@ -11,7 +11,7 @@ type PageData struct {
 	Result string
 }
 
-var tmpl = template.Must(template.ParseFiles("templates/index.html"))
+var tmpl = template.Must(template.ParseFiles("templates/home.html"))
 
 func HomeHanler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
