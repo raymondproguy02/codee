@@ -1,30 +1,19 @@
 package main
 
 import (
-	"ascii-art/parser"
-	"fmt"
-	"os"
+	"ascii-web/handlers"
+	"log"
+	"net/http"
 )
 
 func main() {
-	if len(os.Args) != 3 {
-		return
-	}
-	if len(os.Args[1]) == 0 {
-		return
-	}
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handlers.HomeHanler)
 
-	valid, err := parser.Val(os.Args[1])
+	log.Println("Server running on http://127.0.0.1:8000")
+	err := http.ListenAndServe(":8000", mux)
 	if err != nil {
-		fmt.Printf("invalid %c", valid)
+		log.Fatal(err)
 		return
 	}
-	font, err := parser.LoadBanner(os.Args[2])
-	if err != nil {
-		fmt.Printf("error: %s", err)
-		return
-	}
-	words := parser.Split(os.Args[1])
-	res := parser.GenArt(font, words)
-	fmt.Println(res)
 }
