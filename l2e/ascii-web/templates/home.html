@@ -14,7 +14,12 @@
         <input type="radio" name="banner" value="standard"> standard
         <input type="radio" name="banner" value="thinkertoy"> thinkertoy
         <button type="submit">Gen Art</button>
-        <pre>{{.Result}}</pre>
     </form>
+    <form action="ascii-switch" method="post">
+        <a href="/ascii-switch?text={{.Input}}&banner=shadow">shadow</a>
+        <a href="/ascii-switch?text={{.Input}}&banner=standard">standard</a>
+        <a href="/ascii-switch?text={{.Input}}&banner=thinkertoy">thinkertoy</a>
+    </form>
+    <pre>{{.Result}}</pre>
 </body>
 </html>
