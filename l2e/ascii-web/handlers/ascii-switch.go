@@ -8,10 +8,6 @@ import (
 )
 
 func SwitchHandler(w http.ResponseWriter, r *http.Request) {
-	// if r.Method != http.MethodPost {
-	// 	http.Error(w, "method not allowed", 405)
-	// 	return
-	// }
 	if r.URL.Path != "/ascii-switch" {
 		http.Error(w, "not found", 404)
 		return

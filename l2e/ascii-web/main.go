@@ -15,10 +15,21 @@ func health(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func about(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"name":        "Ascii Art Web",
+		"version":     "1.0.0",
+		"description": "Web version of aascii art!",
+	})
+}
+
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", handlers.HomeHanler)
 	mux.HandleFunc("/health", health)
+	mux.HandleFunc("/about", about)
 	mux.HandleFunc("POST /ascii-art", handlers.AsciiHandler)
 	mux.HandleFunc("/ascii-switch", handlers.SwitchHandler)
 
