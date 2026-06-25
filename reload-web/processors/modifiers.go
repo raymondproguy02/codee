@@ -1,7 +1,6 @@
-package main
+package processors
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
