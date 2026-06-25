@@ -22,6 +22,7 @@ func about(w http.ResponseWriter, r *http.Request) {
 		"name":        "Ascii Art Web",
 		"version":     "1.0.0",
 		"description": "Web version of aascii art!",
+		"author":      "raymondproguy",
 	})
 }
 
