@@ -37,7 +37,7 @@ func style(w http.ResponseWriter, r *http.Request) {
 }
 
 func reload(w http.ResponseWriter, r *http.Request) {
-	text := r.FormValue("input")
+	text := r.FormValue("input") 
 	res := processors.Hex(text)
 	res = processors.Bin(text)
 
