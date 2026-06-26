@@ -8,5 +8,3 @@ type ProGuy struct {
 }
 
 type Person struct{}
-
-func main()
