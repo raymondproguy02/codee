@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,9 +14,9 @@ type Artist struct {
 	Members      []string `json:"members"`
 	CreationDate int      `json:"creationDate"`
 	FirstAlbum   string   `json:"firstAlbum"`
-	Locations    string   `json:"loctions"`
+	Locations    string   `json:"locations"`
 	ConcertDates string   `json:"concertDates"`
-	Reletions    string   `json:"relations"`
+	Relations    string   `json:"relations"`
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -26,8 +27,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	defer data.Body.Close()
 	// res, _ := io.ReadAll(data.Body)
 	// fmt.Fprintln(w, string(res))
-	var artists Artist
-	fmt.Printf("%+v", artists)
+	var artists []Artist
+	err = json.NewDecoder(data.Body).Decode(&artists)
+	mj, _ := json.MarshalIndent(artists, "", "  ")
+	fmt.Fprintln(w, string(mj))
+	//fmt.Printf("%+v", artists)
 }
 
 func main() {
