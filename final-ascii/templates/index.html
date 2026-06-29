@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <form action="ascii" method="post">
+            <textarea name="text"></textarea>
+            <input type="radio" name="banner" class="active">shadow
+            <input type="radio" name="banner" class="active">standard
+            <input type="radio" name="banner" class="active">thinkertoy
+        </form>
+        {{if .Result}}
+        <pre>{{.Result}}</pre>
+        <a href="/ascii-switch?text={{.Text}}&banner=standard">standard</a>
+        <a href="/ascii-switch?text={{.Text}}&banner=shadow">shadow</a>
+        <a href="/ascii-switch?text={{.Text}}&banner=thinkertoy">thinkertoy</a>
+        {{end}}
+    </div>
+</body>
+</html>
