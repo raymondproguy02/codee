@@ -73,5 +73,8 @@ func main() {
 	http.HandleFunc("/ascii", ascii)
 	http.HandleFunc("/ascii-switch", switcha)
 	log.Println("Server up and angry...")
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
