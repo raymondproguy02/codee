@@ -9,9 +9,6 @@ type ProGuy struct {
 
 type Person struct{}
 
-
-package main
-
 import (
 	"log"
 	"://github.com"
@@ -60,7 +57,7 @@ func handlePortfolio(c *fiber.Ctx) error {
 	profile := PortfolioResponse{
 		Schema: "https://json-schema.org",
 		Developer: Developer{
-			Name:         "Raymond", // Change to your full name
+			Name:         "Raymond Nicholas", // Change to your full name
 			Location:     "Otukpo, Nigeria",
 			CurrentRole:  "Software Engineer",
 			Availability: "Open to opportunities",
@@ -71,7 +68,7 @@ func handlePortfolio(c *fiber.Ctx) error {
 			},
 			Interests: []string{
 				"Building open-source tools",
-				"System architecture",
+				"System architecture and design",
 				"Ascii Art Web Generation",
 			},
 			FunFacts: []string{
