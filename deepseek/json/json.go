@@ -9,12 +9,6 @@ type ProGuy struct {
 
 type Person struct{}
 
-import (
-	"log"
-	"://github.com"
-)
-
-// 1. Map out your nested JSON structure into strict Go structs
 type Skills struct {
 	Languages  []string `json:"languages"`
 	Frameworks []string `json:"frameworks"`
@@ -53,18 +47,17 @@ func main() {
 }
 
 func handlePortfolio(c *fiber.Ctx) error {
-	// 2. Populate your portfolio with your actual information
 	profile := PortfolioResponse{
 		Schema: "https://json-schema.org",
 		Developer: Developer{
-			Name:         "Raymond Nicholas", // Change to your full name
+			Name:         "Raymond Nicholas",
 			Location:     "Otukpo, Nigeria",
 			CurrentRole:  "Software Engineer",
 			Availability: "Open to opportunities",
 			Skills: Skills{
 				Languages:  []string{"JavaScript", "Python", "Go"},
-				Frameworks: []string{"React", "Node.js", "Django", "Fiber"},
-				Tools:      []string{"Git", "Docker", "VS Code"},
+				Frameworks: []string{"React", "Node.js", "FastAPI", "Fiber"},
+				Tools:      []string{"Git", "Docker", "VS Code", "Bash"},
 			},
 			Interests: []string{
 				"Building open-source tools",
@@ -83,6 +76,5 @@ func handlePortfolio(c *fiber.Ctx) error {
 		},
 	}
 
-	// 3. Output beautiful, indent-formatted JSON by default for readability
 	return c.Status(fiber.StatusOK).JSONMarshalIndent(profile, "", "  ")
 }
