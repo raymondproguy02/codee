@@ -1,5 +1,10 @@
 package main
 
+import (
+	"log"
+  "net/http"
+)
+
 type ProGuy struct {
 	Name     string   `json:"name"`
 	Bio      string   `json:"bio"`
@@ -38,15 +43,16 @@ type PortfolioResponse struct {
 }
 
 func main() {
-	app := fiber.New()
+	app := http.NewServeMux()
 
-	// Serve the portfolio endpoint
-	app.Get("/portfolio", handlePortfolio)
+	app.HandleFunc("/portfolio", handlePortfolio)
 
-	log.Fatal(app.Listen(":3000"))
+	err := http.ListenAndServe(":8000", app)
+
+	log.Fatal(err)
 }
 
-func handlePortfolio(c *fiber.Ctx) error {
+func handlePortfolio(w http.ResponseWriter, r *http.Request) {
 	profile := PortfolioResponse{
 		Schema: "https://json-schema.org",
 		Developer: Developer{

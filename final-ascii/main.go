@@ -36,7 +36,7 @@ func gen(f []string, w []string) string {
 		}
 		for i := 1; i <= 8; i++ {
 			for _, r := range wod {
-				res.WriteString(f[i+int(r-32)*9])
+				res.WriteString(f[i+(int(r-32)*9)])
 			}
 			res.WriteString("\n")
 		}
@@ -73,7 +73,7 @@ func main() {
 	http.HandleFunc("/ascii", ascii)
 	http.HandleFunc("/ascii-switch", switcha)
 	log.Println("Server up and angry...")
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
