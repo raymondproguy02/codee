@@ -6,17 +6,17 @@ import (
 )
 
 type Health struct {
-	Message string
-	Status  string
+	Message string `message:"string"`
+	Status  string `status:"string"`
 }
 
 type AboutPage struct {
-	Project     string
-	Name        string
-	Version     string
-	Url         string
-	Description string
-	Author      string
+	Project     string `json:"project"`
+	Name        string `json:"name"`
+	Version     string `json:"version"`
+	Url         string `json:"url"`
+	Description string `json:"description"`
+	Author      string `json:"author"`
 }
 
 func HandleHealth(w http.ResponseWriter, r *http.Request) {
