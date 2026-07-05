@@ -1,0 +1,174 @@
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose: #e8587a;
+      --blush: #fde8ef;
+      --deep: #2b1a22;
+      --gold: #d4a04c;
+      --cream: #fff8f9;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ── floating hearts bg ── */
+    .hearts-bg {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .heart {
+      position: absolute;
+      bottom: -40px;
+      font-size: 1.4rem;
+      opacity: 0;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(-10deg); opacity: 0.7; }
+      100% { transform: translateY(-110vh) rotate(10deg); opacity: 0; }
+    }
+
+    /* ── card ── */
+    .card {
+      position: relative; z-index: 1;
+      background: #fff;
+      border: 1.5px solid #f0c4d4;
+      border-radius: 24px;
+      padding: 52px 56px 48px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 12px 48px rgba(232, 88, 122, 0.12);
+    }
+
+    .emoji-hero { font-size: 3.8rem; line-height: 1; margin-bottom: 20px; }
+
+    .eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      color: var(--rose);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--deep);
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    p {
+      color: #7a5565;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    /* ── buttons ── */
+    .btn-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 36px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-yes {
+      background: var(--rose);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(232, 88, 122, 0.38);
+    }
+    .btn-yes:hover {
+      transform: scale(1.06);
+      box-shadow: 0 6px 28px rgba(232, 88, 122, 0.48);
+    }
+    .btn-yes:active { transform: scale(0.97); }
+
+    .btn-no {
+      background: var(--blush);
+      color: var(--rose);
+      position: fixed; /* use fixed so it can roam the whole viewport */
+      transition: none;
+      white-space: nowrap;
+    }
+
+    /* ── page 2 (cheers) ── */
+    #page2 {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: linear-gradient(135deg, #e8587a 0%, #d4a04c 100%);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 40px;
+      animation: fadeIn 0.6s ease;
+    }
+    #page2.show { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    #page2 .big-emoji { font-size: 5rem; margin-bottom: 24px; animation: pop 0.5s 0.4s both; }
+    @keyframes pop {
+      0%   { transform: scale(0); }
+      70%  { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    #page2 h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    #page2 p {
+      color: rgba(255,255,255,0.88);
+      font-size: 1.1rem;
+      max-width: 340px;
+      margin-bottom: 0;
+    }
+
+    /* confetti pieces */
+    .confetti-piece {
+      position: fixed;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      top: -20px;
+      animation: confettiFall linear forwards;
+      z-index: 200;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
