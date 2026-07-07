@@ -58,7 +58,7 @@ func fetchAll() error {
 	urlArtists := "https://groupietrackers.herokuapp.com/api/artists"
 	urlLocations := "https://groupietrackers.herokuapp.com/api/locations"
 	urlDates := "https://groupietrackers.herokuapp.com/api/dates"
-	urlRelations := "https://groupietrackers.herokuapp.com/api/relation"
+	//urlRelations := "https://groupietrackers.herokuapp.com/api/relation"
 
 	data, err := httpClient.Get(urlArtists)
 	if err != nil {
