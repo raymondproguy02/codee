@@ -23,3 +23,6 @@ elif opt == "/":
     print(res)
 else :
     print(f"{opt} not valid operator.")
+
+while True:
+    print("Print Forever!")
