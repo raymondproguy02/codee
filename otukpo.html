@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>OtukpoRent - Find Houses in Otukpo</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f0eb;
+            color: #1e2a1e;
+            padding-bottom: 80px;
+        }
+
+        /* ===== THEME COLORS ===== */
+        :root {
+            --primary: #1a4d1a;
+            --primary-light: #2a6e2a;
+            --gold: #c9a84c;
+            --gold-light: #e8d5a3;
+            --cream: #fdf8f0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .header .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .header .logo span {
+            color: var(--gold);
+        }
+        .header .logo small {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.8;
+            display: block;
+            margin-top: -2px;
+        }
+        .header-actions {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        .header-actions a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            transition: 0.2s;
+        }
+        .header-actions a:hover {
+            background: var(--gold);
+            color: var(--primary);
+        }
+        .header-actions .icon-btn {
+            background: none;
+            font-size: 20px;
+        }
+        .header-actions .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== PAGE CONTAINER ===== */
+        .page {
+            display: none;
+            padding: 20px 16px 100px;
+            max-width: 500px;
+            margin: 0 auto;
+            animation: fadeUp 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        /* ===== HOMEPAGE SEARCH ===== */
+        .search-box {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+        .search-box label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+        .search-box label:first-child {
+            margin-top: 0;
+        }
+        .search-box select,
+        .search-box input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fafafa;
+            transition: 0.2s;
+            appearance: auto;
+        }
+        .search-box select:focus,
+        .search-box input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: white;
+        }
+        .search-btn {
+            width: 100%;
+            margin-top: 16px;
+            padding: 14px;
+            background: var(--gold);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-btn:hover {
+            background: var(--gold-light);
+            transform: scale(1.01);
+        }
+
+        /* ===== CATEGORY PILLS ===== */
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0 20px;
+        }
+        .category-pills button {
+            padding: 8px 18px;
+            border-radius: 30px;
+            border: 1.5px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .category-pills button.active,
+        .category-pills button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ===== PROPERTY CARDS ===== */
+        .property-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .property-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .property-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .property-card .img-wrap {
+            height: 180px;
+            background: #e0d6cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        .property-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .property-card .img-wrap .no-img {
+            font-size: 40px;
+            opacity: 0.3;
+        }
+        .property-card .badge-verified {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--gold);
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+        .property-card .body {
+            padding: 14px 16px 16px;
+        }
+        .property-card .body h3 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .property-card .body .location {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .property-card .body .location i {
+            color: var(--gold);
+            width: 16px;
+        }
+        .property-card .body .meta {
+            font-size: 13px;
+            color: #777;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 6px 0 10px;
+        }
+        .property-card .body .meta span {
+            background: #f0ece8;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+        .property-card .body .contact-lock {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #555;
+        }
+        .property-card .body .contact-lock .lock-icon {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .property-card .body .contact-lock .pay-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .property-card .body .contact-lock .pay-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* ===== DETAIL PAGE ===== */
+        .detail-gallery {
+            background: #e0d6cc;
+            border-radius: var(--radius);
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            margin-bottom: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+        .detail-gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .detail-gallery .no-img {
+            font-size: 50px;
+            opacity: 0.3;
+        }
+        .detail-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .detail-verified {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 2px 14px;
+            border-radius: 20px;
+            margin: 4px 0 10px;
+        }
+        .detail-info {
+            background: white;
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            margin: 16px 0;
+        }
+        .detail-info p {
+            margin: 6px 0;
+            font-size: 15px;
+        }
+        .detail-info p i {
+            width: 22px;
+            color: var(--gold);
+        }
+        .detail-desc {
+            background: white;
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            margin: 16px 0;
+            line-height: 1.6;
+        }
+        .detail-contact-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 17px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 8px 0 12px;
+        }
+        .detail-contact-btn:hover {
+            background: var(--gold-light);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link i {
+            margin-right: 4px;
+        }
+
+        /* ===== POST PROPERTY FORM ===== */
+        .post-form {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        .post-form label {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+            margin-top: 14px;
+            margin-bottom: 4px;
+        }
+        .post-form label:first-child {
+            margin-top: 0;
+        }
+        .post-form input,
+        .post-form select,
+        .post-form textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fafafa;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .post-form input:focus,
+        .post-form select:focus,
+        .post-form textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: white;
+        }
+        .post-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .post-form .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 12px;
+            margin-top: 4px;
+        }
+        .post-form .checkbox-grid label {
+            font-weight: 400;
+            font-size: 14px;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .post-form .checkbox-grid input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+        .post-form .photo-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            color: #888;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #fafafa;
+        }
+        .post-form .photo-upload:hover {
+            border-color: var(--gold);
+            background: #f5f0eb;
+        }
+        .post-form .photo-upload input {
+            display: none;
+        }
+        .post-form .photo-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .post-form .photo-preview img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        .submit-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 17px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .submit-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .dashboard-stats .stat {
+            background: white;
+            border-radius: var(--radius);
+            padding: 14px 8px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .dashboard-stats .stat .num {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .dashboard-stats .stat .label {
+            font-size: 12px;
+            color: #777;
+        }
+        .dash-listing {
+            background: white;
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dash-listing .info h4 {
+            font-size: 15px;
+        }
+        .dash-listing .info .sub {
+            font-size: 13px;
+            color: #777;
+        }
+        .dash-listing .status {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
+        .dash-listing .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .dash-listing .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .dash-listing .status.rented {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        .dash-listing .actions button {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+        .dash-listing .actions button:hover {
+            color: var(--primary);
+        }
+
+        /* ===== PAYMENT MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: fadeUp 0.25s ease;
+        }
+        .modal h3 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        .modal .sub {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .modal .payment-option {
+            background: #f5f0eb;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+        .modal .payment-option .label {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .modal .payment-option .details {
+            font-size: 14px;
+            color: #333;
+            margin: 4px 0;
+        }
+        .modal .payment-option .details strong {
+            color: var(--primary);
+        }
+        .modal input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 6px;
+        }
+        .modal .verify-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--gold);
+            color: var(--primary);
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+        .modal .close-modal {
+            display: block;
+            text-align: center;
+            margin-top: 14px;
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* ===== TOAST NOTIFICATION ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            display: none;
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 600px) {
+            .page {
+                max-width: 600px;
+            }
+            .property-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .property-card .img-wrap {
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .header .logo {
+                font-size: 18px;
+            }
+            .header-actions a {
+                font-size: 12px;
+                padding: 4px 10px;
+            }
+            .category-pills button {
+                font-size: 12px;
+                padding: 6px 14px;
+            }
+        }
+
+        /* ===== UTILITY ===== */
+        .text-center {
+            text-align: center;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tag {
+            display: inline-block;
+            background: #f0ece8;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="logo">
+            🏠 Otukpo<span>Rent</span>
+            <small>find your home in Otukpo</small>
+        </div>
+        <div class="header-actions">
+            <a href="#" onclick="showPage('home')"><i class="fas fa-search"></i></a>
+            <a href="#" onclick="showPage('post')"><i class="fas fa-plus-circle"></i> Post</a>
+            <a href="#" onclick="showPage('dashboard')"><i class="fas fa-user"></i></a>
+        </div>
+    </header>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast"></div>
+
+    <!-- ==================================================== -->
+    <!-- PAGE: HOME                                           -->
+    <!-- ==================================================== -->
+    <section id="page-home" class="page active">
+        <div class="search-box">
+            <label><i class="fas fa-map-marker-alt"></i> Location</label>
+            <select id="searchLocation">
+                <option value="">All Locations</option>
+                <option value="GRA">GRA</option>
+                <option value="Asa">Asa</option>
+                <option value="Otukpo Town">Otukpo Town</option>
+                <option value="Deport">Deport</option>
+                <option value="Eupi">Eupi</option>
+                <option value="Pipeline">Pipeline</option>
+                <option value="Ochito Ghana">Ochito Ghana</option>
+                <option value="Ogbanor Marje">Ogbanor Marje</option>
+                <option value="Obaganya">Obaganya</option>
+                <option value="Otia">Otia</option>
+                <option value="Eth Man Quarters">Eth Man Quarters</option>
+                <option value="Idye">Idye</option>
+                <option value="Otobi">Otobi</option>
+                <option value="Icho">Icho</option>
+            </select>
+
+            <label><i class="fas fa-building"></i> Property Type</label>
+            <select id="searchType">
+                <option value="">All Types</option>
+                <option value="Single Room">Single Room</option>
+                <option value="Room & Parlor">Room & Parlor</option>
+                <option value="Self-Contained">Self-Contained</option>
+                <option value="Flat">Flat</option>
+                <option value="Duplex">Duplex</option>
+                <option value="Boys' Quarters">Boys' Quarters</option>
+                <option value="Land">Land</option>
+                <option value="Shop/Store">Shop/Store</option>
+                <option value="Office">Office</option>
+            </select>
+
+            <button class="search-btn" onclick="searchProperties()">
+                <i class="fas fa-search"></i> Find Properties
+            </button>
+        </div>
+
+        <div class="category-pills">
+            <button class="active" onclick="filterCategory('all')">All</button>
+            <button onclick="filterCategory('Flat')">Flats</button>
+            <button onclick="filterCategory('Single Room')">Rooms</button>
+            <button onclick="filterCategory('Shop/Store')">Shops</button>
+            <button onclick="filterCategory('Land')">Land</button>
+        </div>
+
+        <div id="homeResults">
+            <div class="property-grid" id="propertyGrid"></div>
+        </div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- PAGE: DETAIL                                         -->
+    <!-- ==================================================== -->
+    <section id="page-detail" class="page">
+        <a href="#" class="back-link" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> Back</a>
+        <div id="detailContent"></div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- PAGE: POST PROPERTY                                  -->
+    <!-- ==================================================== -->
+    <section id="page-post" class="page">
+        <h2 class="page-title"><i class="fas fa-plus-circle"></i> Post Your Property</h2>
+        <form class="post-form" id="postForm" onsubmit="submitProperty(event)">
+            <label>Property Type *</label>
+            <div class="checkbox-grid" id="typeCheckboxes">
+                <label><input type="checkbox" value="Single Room" /> Single Room</label>
+                <label><input type="checkbox" value="Room & Parlor" /> Room & Parlor</label>
+                <label><input type="checkbox" value="Self-Contained" /> Self-Contained</label>
+                <label><input type="checkbox" value="Flat" /> Flat</label>
+                <label><input type="checkbox" value="Duplex" /> Duplex</label>
+                <label><input type="checkbox" value="Boys' Quarters" /> Boys' Quarters</label>
+                <label><input type="checkbox" value="Land" /> Land</label>
+                <label><input type="checkbox" value="Shop/Store" /> Shop/Store</label>
+                <label><input type="checkbox" value="Office" /> Office</label>
+            </div>
+
+            <label>Location *</label>
+            <select id="postLocation" required>
+                <option value="">Select location</option>
+                <option value="GRA">GRA</option>
+                <option value="Asa">Asa</option>
+                <option value="Otukpo Town">Otukpo Town</option>
+                <option value="Deport">Deport</option>
+                <option value="Eupi">Eupi</option>
+                <option value="Pipeline">Pipeline</option>
+                <option value="Ochito Ghana">Ochito Ghana</option>
+                <option value="Ogbanor Marje">Ogbanor Marje</option>
+                <option value="Obaganya">Obaganya</option>
+                <option value="Otia">Otia</option>
+                <option value="Eth Man Quarters">Eth Man Quarters</option>
+                <option value="Idye">Idye</option>
+                <option value="Otobi">Otobi</option>
+                <option value="Icho">Icho</option>
+            </select>
+
+            <label>Specific Area / Street</label>
+            <input type="text" id="postStreet" placeholder="e.g. Behind market, Near GRA junction" />
+
+            <label>Rent Price (Optional)</label>
+            <input type="text" id="postPrice" placeholder="e.g. ₦250,000/year" />
+
+            <label>Description</label>
+            <textarea id="postDesc" placeholder="Describe your property..."></textarea>
+
+            <label>Upload Photos (Required)</label>
+            <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+                <i class="fas fa-camera" style="font-size:28px;display:block;margin-bottom:4px;"></i>
+                Click to add photos (max 5)
+                <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(event)" />
+            </div>
+            <div class="photo-preview" id="photoPreview"></div>
+
+            <label>Your Full Name *</label>
+            <input type="text" id="postName" placeholder="e.g. Mr. Emmanuel Oche" required />
+
+            <label>Your Phone Number *</label>
+            <input type="tel" id="postPhone" placeholder="e.g. 080XXXXXXX" required />
+
+            <button type="submit" class="submit-btn"><i class="fas fa-check-circle"></i> Submit Listing</button>
+            <p style="font-size:13px;color:#888;margin-top:8px;text-align:center;">
+                ⚡ Your listing will be reviewed before going live
+            </p>
+        </form>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- PAGE: DASHBOARD                                      -->
+    <!-- ==================================================== -->
+    <section id="page-dashboard" class="page">
+        <h2 class="page-title"><i class="fas fa-user"></i> My Dashboard</h2>
+        <div class="dashboard-stats">
+            <div class="stat">
+                <div class="num" id="statActive">0</div>
+                <div class="label">Active</div>
+            </div>
+            <div class="stat">
+                <div class="num" id="statPending">0</div>
+                <div class="label">Pending</div>
+            </div>
+            <div class="stat">
+                <div class="num" id="statRented">0</div>
+                <div class="label">Rented</div>
+            </div>
+        </div>
+        <div id="dashboardListings"></div>
+        <p style="text-align:center;color:#999;font-size:14px;margin-top:16px;">
+            <i class="fas fa-info-circle"></i> Listings are saved locally on this device
+        </p>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- PAYMENT MODAL                                        -->
+    <!-- ==================================================== -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal">
+            <h3>💰 Pay ₦200 to Contact</h3>
+            <p class="sub" id="paymentPropertyName">Property Name</p>
+
+            <div class="payment-option">
+                <div class="label">Option 1: OPAY Transfer</div>
+                <div class="details">Account: <strong>OtukpoRent</strong></div>
+                <div class="details">OPAY Number: <strong>080XXXXXXX</strong></div>
+                <div class="details">Amount: <strong>₦200</strong></div>
+            </div>
+
+            <label>Enter Transaction Reference</label>
+            <input type="text" id="paymentRef" placeholder="e.g. OPAY123456" />
+
+            <button class="verify-btn" onclick="verifyPayment()">
+                <i class="fas fa-check"></i> Verify Payment
+            </button>
+
+            <div class="payment-option" style="margin-top:12px;">
+                <div class="label">Option 2: Pay Cash at Agent</div>
+                <div class="details">Visit any of our agents in Otukpo</div>
+                <div class="details">📍 Ask for <strong>OtukpoRent</strong> agent</div>
+            </div>
+
+            <a class="close-modal" onclick="closePaymentModal()">Cancel</a>
+        </div>
+    </div>
+
+    <!-- ==================================================== -->
+    <!-- JAVASCRIPT                                           -->
+    <!-- ==================================================== -->
+    <script>
+        // ===== DATA STORE =====
+        let properties = [];
+        let currentDetailId = null;
+        let selectedCategory = 'all';
+        let photoFiles = [];
+
+        // ===== LOAD FROM LOCALSTORAGE =====
+        function loadProperties() {
+            const stored = localStorage.getItem('otukpo_properties');
+            if (stored) {
+                properties = JSON.parse(stored);
+            } else {
+                // Seed with sample properties
+                properties = [{
+                    id: 1,
+                    type: 'Flat',
+                    location: 'GRA',
+                    street: 'Behind GRA market',
+                    price: '₦250,000/year',
+                    desc: 'Spacious 3-bedroom flat with parlor, kitchen, and bathroom. Secure neighborhood, close to schools.',
+                    name: 'Mr. Emmanuel Oche',
+                    phone: '08012345678',
+                    verified: true,
+                    status: 'active',
+                    photos: [],
+                    createdAt: Date.now() - 86400000 * 2
+                }, {
+                    id: 2,
+                    type: 'Self-Contained',
+                    location: 'Asa',
+                    street: 'Near Asa junction',
+                    price: '₦120,000/year',
+                    desc: 'Clean self-contained apartment with private toilet and kitchen. Good for a single person or couple.',
+                    name: 'Mrs. Grace Ali',
+                    phone: '08087654321',
+                    verified: false,
+                    status: 'active',
+                    photos: [],
+                    createdAt: Date.now() - 86400000 * 5
+                }, {
+                    id: 3,
+                    type: 'Shop/Store',
+                    location: 'Otukpo Town',
+                    street: 'Main market road',
+                    price: '₦50,000/year',
+                    desc: 'Prime shop location in Otukpo main market. High foot traffic, good for business.',
+                    name: 'Mr. John Odo',
+                    phone: '08055553333',
+                    verified: true,
+                    status: 'active',
+                    photos: [],
+                    createdAt: Date.now() - 86400000 * 1
+                }, {
+                    id: 4,
+                    type: 'Single Room',
+                    location: 'Pipeline',
+                    street: 'Behind Pipeline filling station',
+                    price: '₦80,000/year',
+                    desc: 'Comfortable single room in a quiet area. Shared facilities available.',
+                    name: 'Mr. Peter Ibe',
+                    phone: '08044442222',
+                    verified: false,
+                    status: 'active',
+                    photos: [],
+                    createdAt: Date.now() - 86400000 * 3
+                }, {
+                    id: 5,
+                    type: 'Land',
+                    location: 'Deport',
+                    street: 'Near Deport junction',
+                    price: '₦500,000',
+                    desc: 'Large plot of land suitable for building. Close to main road with good access.',
+                    name: 'Chief Mike Okafor',
+                    phone: '08033331111',
+                    verified: true,
+                    status: 'active',
+                    photos: [],
+                    createdAt: Date.now() - 86400000 * 7
+                }];
+                saveProperties();
+            }
+            renderAll();
+        }
+
+        function saveProperties() {
+            localStorage.setItem('otukpo_properties', JSON.stringify(properties));
+        }
+
+        // ===== RENDER =====
+        function renderAll() {
+            renderHomeGrid(properties);
+            renderDashboard();
+        }
+
+        function renderHomeGrid(list) {
+            const grid = document.getElementById('propertyGrid');
+            if (!list || list.length === 0) {
+                grid.innerHTML =
+                    `<p style="text-align:center;color:#888;padding:40px 0;">No properties found. <br> Be the first to <a href="#" onclick="showPage('post')" style="color:var(--gold);font-weight:600;">post a listing</a>!</p>`;
+                return;
+            }
+            grid.innerHTML = list.map(p => `
+                <div class="property-card" onclick="viewDetail(${p.id})">
+                    <div class="img-wrap">
+                        ${p.photos && p.photos.length > 0 
+                            ? `<img src="${p.photos[0]}" alt="${p.type}" />` 
+                            : `<span class="no-img">🏠</span>`}
+                        ${p.verified ? '<span class="badge-verified">✅ Verified</span>' : ''}
+                    </div>
+                    <div class="body">
+                        <h3>${p.type}</h3>
+                        <div class="location"><i class="fas fa-map-marker-alt"></i> ${p.location}</div>
+                        <div class="meta">
+                            <span>${p.street || p.location}</span>
+                            ${p.price ? `<span>${p.price}</span>` : ''}
+                        </div>
+                        <div class="contact-lock">
+                            <span><i class="fas fa-user"></i> ${p.name}</span>
+                            <span class="lock-icon"><i class="fas fa-lock"></i> Pay ₦200</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDashboard() {
+            const active = properties.filter(p => p.status === 'active').length;
+            const pending = properties.filter(p => p.status === 'pending').length;
+            const rented = properties.filter(p => p.status === 'rented').length;
+            document.getElementById('statActive').textContent = active;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statRented').textContent = rented;
+
+            const container = document.getElementById('dashboardListings');
+            const all = properties.filter(p => p.status !== 'deleted');
+            if (all.length === 0) {
+                container.innerHTML =
+                    `<p style="text-align:center;color:#888;padding:20px 0;">You haven't posted any properties yet. <br> <a href="#" onclick="showPage('post')" style="color:var(--gold);font-weight:600;">Post your first property</a></p>`;
+                return;
+            }
+            container.innerHTML = all.map(p => `
+                <div class="dash-listing">
+                    <div class="info">
+                        <h4>${p.type} - ${p.location}</h4>
+                        <div class="sub">${p.street || ''} ${p.price ? '| ' + p.price : ''}</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span class="status ${p.status}">${p.status}</span>
+                        <div class="actions">
+                            <button onclick="toggleRented(${p.id})" title="Mark rented"><i class="fas fa-check-circle"></i></button>
+                            <button onclick="deleteListing(${p.id})" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== SEARCH & FILTER =====
+        function searchProperties() {
+            const loc = document.getElementById('searchLocation').value.toLowerCase();
+            const type = document.getElementById('searchType').value.toLowerCase();
+            let filtered = properties.filter(p => p.status === 'active');
+            if (loc) filtered = filtered.filter(p => p.location.toLowerCase().includes(loc));
+            if (type) filtered = filtered.filter(p => p.type.toLowerCase().includes(type));
+            renderHomeGrid(filtered);
+            showPage('home');
+        }
+
+        function filterCategory(cat) {
+            selectedCategory = cat;
+            document.querySelectorAll('.category-pills button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            let filtered = properties.filter(p => p.status === 'active');
+            if (cat !== 'all') {
+                filtered = filtered.filter(p => p.type === cat);
+            }
+            renderHomeGrid(filtered);
+        }
+
+        // ===== VIEW DETAIL with Gallery =====
+function viewDetail(id) {
+    const p = properties.find(prop => prop.id === id);
+    if (!p) return;
+    currentDetailId = id;
+
+    const photos = p.photos && p.photos.length > 0 ? p.photos : [];
+    const hasPhotos = photos.length > 0;
+
+    // Build gallery HTML
+    let galleryHTML = '';
+    if (hasPhotos) {
+        galleryHTML = `
+            <div class="detail-gallery" id="detailGallery" style="position:relative;">
+                <img id="mainGalleryImg" src="${photos[0]}" alt="${p.type}" style="width:100%;height:100%;object-fit:cover;" />
+                ${p.verified ? '<span class="badge-verified" style="position:absolute;top:10px;left:10px;">✅ Verified</span>' : ''}
+                ${photos.length > 1 ? `
+                    <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;">
+                        ${photos.length} photos
+                    </div>
+                ` : ''}
+            </div>
+            ${photos.length > 1 ? `
+                <div style="display:flex;gap:8px;overflow-x:auto;padding:10px 0;margin-bottom:12px;scrollbar-width:thin;" id="thumbnailStrip">
+                    ${photos.map((src, idx) => `
+                        <img src="${src}" onclick="changeGalleryImage(${idx})" 
+                             style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:2px solid ${idx === 0 ? 'var(--gold)' : '#ddd'};cursor:pointer;flex-shrink:0;" 
+                             id="thumb_${idx}" />
+                    `).join('')}
+                </div>
+            ` : ''}
+        `;
+    } else {
+        galleryHTML = `
+            <div class="detail-gallery" style="display:flex;align-items:center;justify-content:center;color:#999;font-size:50px;opacity:0.3;">
+                🏠
+                ${p.verified ? '<span class="badge-verified" style="position:absolute;top:10px;left:10px;">✅ Verified</span>' : ''}
+            </div>
+        `;
+    }
+
+    const container = document.getElementById('detailContent');
+    container.innerHTML = `
+        ${galleryHTML}
+
+        <div class="detail-title">${p.type}</div>
+        ${p.verified ? '<div class="detail-verified">⭐ Verified Landlord</div>' : ''}
+
+        <div class="detail-info">
+            <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> ${p.location}</p>
+            ${p.street ? `<p><i class="fas fa-road"></i> <strong>Area:</strong> ${p.street}</p>` : ''}
+            ${p.price ? `<p><i class="fas fa-money-bill-wave"></i> <strong>Price:</strong> ${p.price}</p>` : ''}
+            <p><i class="fas fa-user"></i> <strong>Landlord:</strong> ${p.name}</p>
+            <p><i class="fas fa-phone"></i> <strong>Contact:</strong> 
+                ${p.revealed ? p.phone : '<span style="color:var(--gold);font-weight:600;">🔒 Pay ₦200 to reveal</span>'}
+            </p>
+        </div>
+
+        <div class="detail-desc">
+            <strong>Description:</strong>
+            <p style="margin-top:6px;">${p.desc || 'No description provided.'}</p>
+        </div>
+
+        ${!p.revealed ? `
+            <button class="detail-contact-btn" onclick="openPaymentModal('${p.type} - ${p.location}')">
+                <i class="fas fa-lock"></i> Pay ₦200 to Reveal Contact
+            </button>
+        ` : `
+            <div style="background:#d4edda;padding:14px;border-radius:var(--radius);text-align:center;color:#155724;font-weight:600;">
+                <i class="fas fa-check-circle"></i> Contact revealed: ${p.phone}
+            </div>
+        `}
+
+        <div style="display:flex;gap:12px;margin-top:12px;font-size:14px;color:#888;">
+            <a href="#" onclick="reportListing(${p.id})" style="color:#888;"><i class="fas fa-flag"></i> Report</a>
+            <a href="#" onclick="shareListing(${p.id})" style="color:#888;"><i class="fas fa-share-alt"></i> Share</a>
+        </div>
+    `;
+
+    // Store current gallery index
+    window._galleryPhotos = photos;
+    window._galleryIndex = 0;
+
+    showPage('detail');
+}
+
+// ===== GALLERY FUNCTIONS =====
+function changeGalleryImage(index) {
+    const photos = window._galleryPhotos || [];
+    if (!photos.length || index >= photos.length) return;
+
+    window._galleryIndex = index;
+
+    // Update main image
+    const mainImg = document.getElementById('mainGalleryImg');
+    if (mainImg) {
+        mainImg.src = photos[index];
+    }
+
+    // Update thumbnail borders
+    document.querySelectorAll('#thumbnailStrip img').forEach((thumb, i) => {
+        thumb.style.borderColor = i === index ? 'var(--gold)' : '#ddd';
+        thumb.style.borderWidth = i === index ? '3px' : '2px';
+    });
+
+    // Update photo counter if present
+    const counter = document.querySelector('.detail-gallery .badge-verified:last-child');
+    // We'll just update the count in the corner if we want
+}
+
+// ===== KEYBOARD NAVIGATION (Desktop) =====
+document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('page-detail').classList.contains('active')) return;
+    const photos = window._galleryPhotos || [];
+    if (photos.length <= 1) return;
+
+    if (e.key === 'ArrowLeft') {
+        const newIndex = (window._galleryIndex - 1 + photos.length) % photos.length;
+        changeGalleryImage(newIndex);
+        e.preventDefault();
+    } else if (e.key === 'ArrowRight') {
+        const newIndex = (window._galleryIndex + 1) % photos.length;
+        changeGalleryImage(newIndex);
+        e.preventDefault();
+    }
+});
+
+// ===== TOUCH SWIPE SUPPORT (Mobile) =====
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', function(e) {
+    if (!document.getElementById('page-detail').classList.contains('active')) return;
+    touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+document.addEventListener('touchend', function(e) {
+    if (!document.getElementById('page-detail').classList.contains('active')) return;
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}, { passive: true });
+
+function handleSwipe() {
+    const photos = window._galleryPhotos || [];
+    if (photos.length <= 1) return;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) < 30) return; // minimum swipe distance
+
+    if (diff > 0) {
+        // Swipe left → next image
+        const newIndex = (window._galleryIndex + 1) % photos.length;
+        changeGalleryImage(newIndex);
+    } else {
+        // Swipe right → previous image
+        const newIndex = (window._galleryIndex - 1 + photos.length) % photos.length;
+        changeGalleryImage(newIndex);
+    }
+}
+
+        // ===== PAYMENT MODAL =====
+        let paymentPropertyName = '';
+
+        function openPaymentModal(name) {
+            paymentPropertyName = name;
+            document.getElementById('paymentPropertyName').textContent = name;
+            document.getElementById('paymentRef').value = '';
+            document.getElementById('paymentModal').classList.add('open');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('open');
+        }
+
+        function verifyPayment() {
+            const ref = document.getElementById('paymentRef').value.trim();
+            if (!ref) {
+                showToast('Please enter your transaction reference');
+                return;
+            }
+            // In real version, you'd verify with OPAY API
+            // For demo, we just reveal the contact
+            const p = properties.find(prop => prop.id === currentDetailId);
+            if (p) {
+                p.revealed = true;
+                saveProperties();
+                closePaymentModal();
+                viewDetail(currentDetailId);
+                showToast('✅ Contact revealed! You can now call the landlord.');
+            }
+        }
+
+        // Close modal on overlay click
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) closePaymentModal();
+        });
+
+        // ===== POST PROPERTY =====
+        function handlePhotos(e) {
+            const files = e.target.files;
+            const preview = document.getElementById('photoPreview');
+            preview.innerHTML = '';
+            photoFiles = [];
+            for (let i = 0; i < Math.min(files.length, 5); i++) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    photoFiles.push(ev.target.result);
+                    const img = document.createElement('img');
+                    img.src = ev.target.result;
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(files[i]);
+            }
+        }
+
+        function submitProperty(e) {
+            e.preventDefault();
+
+            // Get selected types
+            const checkedTypes = document.querySelectorAll('#typeCheckboxes input:checked');
+            if (checkedTypes.length === 0) {
+                showToast('Please select at least one property type');
+                return;
+            }
+            const type = checkedTypes[0].value; // Use first selected
+
+            const location = document.getElementById('postLocation').value;
+            if (!location) {
+                showToast('Please select a location');
+                return;
+            }
+
+            const name = document.getElementById('postName').value.trim();
+            const phone = document.getElementById('postPhone').value.trim();
+            if (!name || !phone) {
+                showToast('Please enter your name and phone number');
+                return;
+            }
+
+            if (photoFiles.length === 0) {
+                showToast('Please upload at least one photo');
+                return;
+            }
+
+            const newProp = {
+                id: Date.now(),
+                type: type,
+                location: location,
+                street: document.getElementById('postStreet').value.trim(),
+                price: document.getElementById('postPrice').value.trim(),
+                desc: document.getElementById('postDesc').value.trim(),
+                name: name,
+                phone: phone,
+                verified: false,
+                status: 'pending',
+                photos: photoFiles.slice(0, 5),
+                revealed: false,
+                createdAt: Date.now()
+            };
+
+            properties.unshift(newProp);
+            saveProperties();
+            renderAll();
+
+            // Reset form
+            document.getElementById('postForm').reset();
+            document.getElementById('photoPreview').innerHTML = '';
+            photoFiles = [];
+            document.querySelectorAll('#typeCheckboxes input').forEach(c => c.checked = false);
+
+            showToast('✅ Property submitted for review! It will be live soon.');
+            showPage('home');
+        }
+
+        // ===== DASHBOARD ACTIONS =====
+        function toggleRented(id) {
+            const p = properties.find(prop => prop.id === id);
+            if (p) {
+                p.status = p.status === 'rented' ? 'active' : 'rented';
+                saveProperties();
+                renderAll();
+                showToast(p.status === 'rented' ? '✅ Marked as rented' : '✅ Marked as available');
+            }
+        }
+
+        function deleteListing(id) {
+            if (confirm('Delete this listing?')) {
+                const p = properties.find(prop => prop.id === id);
+                if (p) {
+                    p.status = 'deleted';
+                    saveProperties();
+                    renderAll();
+                    showToast('🗑️ Listing deleted');
+                }
+            }
+        }
+
+        // ===== REPORT & SHARE =====
+        function reportListing(id) {
+            showToast('📢 Listing reported. We\'ll review it.');
+        }
+
+        function shareListing(id) {
+            const p = properties.find(prop => prop.id === id);
+            if (p) {
+                const text = `🏠 ${p.type} in ${p.location} - ${p.price || ''}\nCheck it out on OtukpoRent!`;
+                if (navigator.share) {
+                    navigator.share({ title: 'OtukpoRent Property', text: text });
+                } else {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('📋 Copied to clipboard! Share with friends.');
+                    });
+                }
+            }
+        }
+
+        // ===== NAVIGATION =====
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            if (page === 'dashboard') renderDashboard();
+            if (page === 'home') renderHomeGrid(properties.filter(p => p.status === 'active'));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== TOAST =====
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+        }
+
+        // ===== INIT =====
+        loadProperties();
+
+        // Auto-show home with active listings
+        renderHomeGrid(properties.filter(p => p.status === 'active'));
+    </script>
+
+</body>
+</html>
