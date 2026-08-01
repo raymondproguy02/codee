@@ -1,3 +1,4 @@
+// Daily GitHub contribution count
 package main
 
 import (
